@@ -21,9 +21,8 @@ public class MemberAppTest {
 
         Member findMember = memberService.findMember(1L);
 
-        assertNotNull(findMember);
-
         assertEquals(findMember, member);
 
     }
+
 }
