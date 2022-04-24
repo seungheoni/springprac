@@ -73,6 +73,4 @@ public class MemberAppTest {
 
         return new Order(m.getId(), itemName, itemPrice, fixDiscountPrice);
     }
-
-
 }
