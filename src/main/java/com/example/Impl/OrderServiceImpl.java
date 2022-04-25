@@ -10,7 +10,11 @@ public class OrderServiceImpl implements OrderService {
 
     private MemberRepository memberRepository = new MemoryMemberRepositoryImpl();
 
-    private DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    /*
+        아래와 같이 코드 짰을떄 OCP 위반, DIP 위반
+     */
+    //private DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private DiscountPolicy discountPolicy = new PercentDiscountPolicy();
 
     @Override
     public Order createOrder(Member member, String itemName, int itemPrice) {
