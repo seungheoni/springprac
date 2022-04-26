@@ -3,12 +3,15 @@ package com.example.springprac;
 import com.example.Impl.FixDiscountPolicy;
 import com.example.Impl.MemberServiceImpl;
 import com.example.Impl.OrderServiceImpl;
+import com.example.config.AppConfig;
 import com.example.dto.Member;
 import com.example.dto.Order;
 import com.example.meta.Grade;
 import com.example.role.DiscountPolicy;
 import com.example.role.MemberService;
 import com.example.role.OrderService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,15 +26,26 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class MemberAppTest {
 
-    MemberService memberService = new MemberServiceImpl();
-    OrderService orderService = new OrderServiceImpl();
-    DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    MemberService memberService;
+    OrderService orderService;
+    DiscountPolicy discountPolicy;
+
+    @BeforeEach
+    public void testConfig() {
+
+        /*
+            생성자 주입(구현체 주입)
+         */
+        AppConfig appConfig = new AppConfig();
+        memberService = appConfig.memberService();
+        orderService = appConfig.orderService();
+        discountPolicy = new FixDiscountPolicy();
+    }
 
     @Test
     @DisplayName("멤버 테스트 app 구동 ")
     public void memberAppTest() {
 
-        MemberService memberService = new MemberServiceImpl();
         Member member = new Member(1L,"skydrive860@gmail.com", Grade.normal);
         memberService.join(member);
 
@@ -44,8 +58,6 @@ public class MemberAppTest {
     @Test
     @DisplayName("오더 기능 app 구동 Mocking")
     public void OrderAppMocking(@Mock OrderService orderService) {
-
-        MemberService memberService = new MemberServiceImpl();
 
         memberService.join(new Member(1L,"skydrive860@gmail.com",Grade.vip));
 
@@ -65,7 +77,7 @@ public class MemberAppTest {
     }
 
 
-    public Order createOrderTestMocking(Member member, String itemName, int itemPrice) {
+    public Order createOrderTest(Member member, String itemName, int itemPrice) {
 
         memberService.join(new Member(1L,"skydrive860@gmail.com",Grade.vip));
 
