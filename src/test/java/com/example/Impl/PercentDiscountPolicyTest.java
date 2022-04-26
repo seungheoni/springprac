@@ -13,8 +13,8 @@ class PercentDiscountPolicyTest {
     private DiscountPolicy discountPolicy = new PercentDiscountPolicy();
 
     @Test
-    @DisplayName("vip는 10퍼센트 할인율 적용")
-    public void vip_O() {
+    @DisplayName("vip는 10퍼센트 할인율 적용 o")
+    public void vip_O_policy() {
         Member member = new Member(1L, "skydrive860@gmail.com", Grade.vip);
 
         assertEquals(1000,discountPolicy.discountFix(member, 10000));
@@ -25,8 +25,8 @@ class PercentDiscountPolicyTest {
      */
 
     @Test
-    @DisplayName("vip가 아니면 10퍼센트가 적용되면 안됨")
-    public void vip_x() {
+    @DisplayName("vip가 아니면 10퍼센트 할인율 적용 X")
+    public void vip_x_policy() {
         Member member = new Member(1L, "ued_123@gmail.com", Grade.normal);
 
         assertEquals(1000,discountPolicy.discountFix(member, 10000));
