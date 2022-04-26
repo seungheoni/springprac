@@ -43,8 +43,8 @@ public class MemberAppTest {
     }
 
     @Test
-    @DisplayName("멤버 테스트 app 구동 테스트")
-    public void memberApp() {
+    @DisplayName("멤버 테스트 app 구동 ")
+    public void memberAppTest() {
 
         Member member = new Member(1L,"skydrive860@gmail.com", Grade.normal);
         memberService.join(member);
@@ -56,23 +56,26 @@ public class MemberAppTest {
     }
 
     @Test
-    @DisplayName("오더 기능 app 구동 Mocking테스트")
-    public void OrderAppMockingTest(@Mock OrderService orderService) {
+    @DisplayName("오더 기능 app 구동 Mocking")
+    public void OrderAppMocking(@Mock OrderService orderService) {
 
         memberService.join(new Member(1L,"skydrive860@gmail.com",Grade.vip));
 
         Member member = memberService.findMember(1L);
 
         when(orderService.createOrder(member, "itemA", 10000))
-                .thenReturn(createOrderTest(member,"itemA",10000));
+                .thenReturn(createOrderTestMocking(member,"itemA",10000));
 
         Order orderRes = orderService.createOrder(member, "itemA", 10000);
 
         System.out.println(orderRes.toString());
 
+        System.out.println("testSuccess");
+
         assertEquals(9000, orderRes.calculateDiscountPrice());
 
     }
+
 
     public Order createOrderTest(Member member, String itemName, int itemPrice) {
 
