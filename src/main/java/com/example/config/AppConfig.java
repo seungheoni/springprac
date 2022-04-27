@@ -8,7 +8,10 @@ import com.example.role.DiscountPolicy;
 import com.example.role.MemberRepository;
 import com.example.role.MemberService;
 import com.example.role.OrderService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
     /*
@@ -20,12 +23,24 @@ public class AppConfig {
 
       이러한 것을 생성자 주입이라고 한다.
      */
+
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(new MemoryMemberRepositoryImpl());
     }
 
-    public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepositoryImpl(), new FixDiscountPolicy());
+    @Bean
+    public MemberRepository memberRepository() {
+        return new MemoryMemberRepositoryImpl();
     }
 
+    @Bean
+    public OrderService orderService() {
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    @Bean
+    public DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
+    }
 }
