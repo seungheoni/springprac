@@ -8,9 +8,13 @@ import com.example.role.OrderService;
 
 public class OrderServiceImpl implements OrderService {
 
-    private MemberRepository memberRepository = new MemoryMemberRepositoryImpl();
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
 
-    private DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Member member, String itemName, int itemPrice) {
