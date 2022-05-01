@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SpringContextBeanTest {
+public class SpringAnnotationContextBeanTest {
 
 
     ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);

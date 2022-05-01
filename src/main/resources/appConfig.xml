@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="memberService" class="com.example.Impl.MemberServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
+    </bean>
+
+    <bean id="memberRepository" class="com.example.Impl.MemoryMemberRepositoryImpl"/>
+
+    <bean id="orderService" class="com.example.Impl.OrderServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
+        <constructor-arg name="discountPolicy" ref="discountPolicy"/>
+    </bean>
+
+    <bean id="discountPolicy" class="com.example.Impl.FixDiscountPolicy"/>
+
+
+
+    <!--
+        위에 설정한것이 어노테이션기반에 이부분임.
+        @Bean
+        public MemberService memberService() {
+            return new MemberServiceImpl(memberRepository());
+        }
+
+        @Bean
+        public MemberRepository memberRepository() {
+            return new MemoryMemberRepositoryImpl();
+        }
+
+        @Bean
+        public OrderService orderService() {
+            return new OrderServiceImpl(memberRepository(), discountPolicy());
+        }
+
+        @Bean
+        public DiscountPolicy discountPolicy() {
+            return new FixDiscountPolicy();
+        }
+    -->
+
+</beans>
