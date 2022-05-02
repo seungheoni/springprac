@@ -1,15 +1,17 @@
 package com.example.springprac;
 
-import com.example.Impl.MemberServiceImpl;
 import com.example.config.AppConfig;
 import com.example.role.MemberService;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.example.single.StateFulService;
 import com.example.single.SingleTon;
+import com.example.single.StateLocalService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 public class SingleToneTest {
 
@@ -64,11 +66,58 @@ public class SingleToneTest {
     public void SpringContextTestCode() {
 
         ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
-        MemberService memberService1 = ac.getBean("memberService",MemberService.class);
-        MemberService memberService2 = ac.getBean("memberService",MemberService.class);
+        MemberService memberService1 = ac.getBean("memberService", MemberService.class);
+        MemberService memberService2 = ac.getBean("memberService", MemberService.class);
 
         // 참조 주소 확인
         System.out.println(memberService1);
         System.out.println(memberService2);
+    }
+
+    @Test
+    @DisplayName("스프링 싱글톤의 상태를 유지하는 값을 사용할떄의 문제점 중요!")
+    public void StateFulServiceTest() {
+
+        ApplicationContext ac = new AnnotationConfigApplicationContext(SingleDi.class);
+        StateFulService o1 = ac.getBean("stateFulService", StateFulService.class);
+        StateFulService o2 = ac.getBean("stateFulService", StateFulService.class);
+
+        o1.setOrder(1000);
+        o2.setOrder(2000);
+
+        assertNotEquals(1000, o1.getOrder());
+    }
+
+    @Test
+    public void StateFulLocal() {
+
+        /*
+            스프링 빈은 언제나 무상태(어떠한 값을 계속 유지하는 것이 아닌)
+            로 설계 해야한다
+            구체적으로는 값을 담을떄 지역변수와 파라미터, ThreadLocal등을 사용한다.
+         */
+        ApplicationContext ac = new AnnotationConfigApplicationContext(SingleDi.class);
+        StateLocalService stateLocalService1 = ac.getBean("stateFulLocalService",StateLocalService.class);
+        StateLocalService stateLocalService2 = ac.getBean("stateFulLocalService",StateLocalService.class);
+
+        int order1 = stateLocalService1.getOrder(1000);
+        int order2 = stateLocalService2.getOrder(2000);
+
+        System.out.println(order1 + " " + order2);
+        assertNotEquals(order1, order2);
+
+    }
+
+    static class SingleDi {
+
+        @Bean
+        public StateFulService stateFulService() {
+            return new StateFulService();
+        }
+
+        @Bean
+        public StateLocalService stateFulLocalService() {
+            return new StateLocalService();
+        }
     }
 }
