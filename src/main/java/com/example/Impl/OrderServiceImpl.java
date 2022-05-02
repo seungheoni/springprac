@@ -24,4 +24,8 @@ public class OrderServiceImpl implements OrderService {
 
         return new Order(m.getId(), itemName, itemPrice, fixDiscountPrice);
     }
+
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
