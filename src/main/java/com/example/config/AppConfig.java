@@ -24,6 +24,14 @@ public class AppConfig {
       이러한 것을 생성자 주입이라고 한다.
      */
 
+    /*
+       빈이 생성될때
+           memberService() -> new MemberServiceImpl
+           OrderService() -> new MemberServiceImpl
+           이렇게 새로 할당하는데
+           이러면 스프링 빈의 싱글톤이 꺠질까?
+     */
+
     @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
