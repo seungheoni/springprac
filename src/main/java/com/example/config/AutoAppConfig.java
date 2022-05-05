@@ -1,5 +1,8 @@
 package com.example.config;
 
+import com.example.Impl.MemoryMemberRepositoryImpl;
+import com.example.role.MemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -13,4 +16,8 @@ import org.springframework.context.annotation.FilterType;
 public class AutoAppConfig {
 
 
+    @Bean(name = "memoryMemberRepositoryImpl")
+    MemberRepository memberRepository() {
+        return new MemoryMemberRepositoryImpl();
+    }
 }
