@@ -93,7 +93,8 @@ public class SpringAnnotationContextBeanTest {
 
         @Bean
         public OrderService orderService() {
-            return new OrderServiceImpl(memberRepository(), discountPolicy());
+            //return new OrderServiceImpl(memberRepository(), discountPolicy());
+            return null;
         }
 
         @Bean
