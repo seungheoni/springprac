@@ -43,7 +43,7 @@ public class ConfigurationSingleTonTest {
         assertEquals(memberRepository1, memberRepositoryOrg);
         assertEquals(memberRepository2, memberRepositoryOrg);
     }
-
+  
     @Test
     public void ConfigurationDeep() {
         ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
