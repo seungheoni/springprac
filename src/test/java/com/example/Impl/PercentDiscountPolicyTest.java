@@ -29,6 +29,6 @@ class PercentDiscountPolicyTest {
     public void vipXpol() {
         Member member = new Member(1L, "ued_123@gmail.com", Grade.normal);
 
-        assertEquals(1000,discountPolicy.discountFix(member, 10000));
+        assertNotEquals(1000,discountPolicy.discountFix(member, 10000));
     }
 }
