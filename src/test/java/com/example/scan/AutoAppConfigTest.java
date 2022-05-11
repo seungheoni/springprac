@@ -26,7 +26,6 @@ public class AutoAppConfigTest {
 
         assertInstanceOf(MemberServiceImpl.class, memberService);
 
-
         /*
            @Autowired private MemberRepository memberRepository;
             @Autowired private DiscountPolicy discountPolicy;
