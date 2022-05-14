@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Scope;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PrototypeTest {
@@ -21,35 +24,33 @@ public class PrototypeTest {
     @Test
     public void prototypeTest() {
 
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class);
+        var equalsBean = Optional.of(new AnnotationConfigApplicationContext(PrototypeBean.class))
+                .map(context -> {
+                    var equals = context.getBean(PrototypeBean.class) == context.getBean(PrototypeBean.class);
+                    context.close();
+                    return equals;
+                });
 
-        PrototypeBean prototypeBean1 = ac.getBean(PrototypeBean.class);
-        PrototypeBean prototypeBean2 = ac.getBean(PrototypeBean.class);
+        assertTrue(!equalsBean.get());
 
-        System.out.println(prototypeBean1);
-        System.out.println(prototypeBean2);
-
-        assertNotEquals(prototypeBean1, prototypeBean2);
-
-        ac.close();
     }
 
     @Test
-    @DisplayName("싱글톤에서 멤버변수로 프로토타입을 사용할때의 문제접")
+    @DisplayName("싱글톤에서 멤버변수로 프로토타입을 사용할때의 문제점")
     public void singleTonClientUsePrototype() {
 
-        AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class,ClientBean.class);
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(PrototypeBean.class,ClientBean.class);
 
-        ClientBean clientBean1 = ac.getBean(ClientBean.class);
+        ClientBean clientBean1 = annotationConfigApplicationContext.getBean(ClientBean.class);
         int count = clientBean1.logic();
         assertEquals(1,count);
 
-        ClientBean clientBean2 = ac.getBean(ClientBean.class);
+        ClientBean clientBean2 = annotationConfigApplicationContext.getBean(ClientBean.class);
         int count2 = clientBean2.logic();
 
         assertEquals(1, count2);
 
-        ac.close();
+        annotationConfigApplicationContext.close();
     }
 
 
@@ -63,7 +64,6 @@ public class PrototypeTest {
     @RequiredArgsConstructor
     static class ClientBean {
 
-        //private final PrototypeBean prototypeBean; //생성시점에 스프링컨테이너한테 주입받음.
 
         /*
          * 의존관계를 외부에서 주입(DI) 받는게 아니라 이렇게 직접 필요한 의존관계를 찾는 것을 Dependency Lookup (DL) 의존관계 조회(탐색) 이라한다.
@@ -77,15 +77,6 @@ public class PrototypeTest {
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
-
-//        private final ApplicationContext ac;
-//
-//        public int logic() {
-//
-//            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
-//            prototypeBean.addCount();
-//            return prototypeBean.getCount();
-//        }
     }
 
     @Scope("prototype")
